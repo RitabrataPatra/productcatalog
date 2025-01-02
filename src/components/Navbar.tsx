@@ -1,10 +1,8 @@
 "use client"
 import Image from "next/image";
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { PlusCircleIcon} from "lucide-react";
+import { Input } from "@/components/ui/input";;
+import { CreateProdM } from "./CreateProdM";
 
 const Navbar = () => {
   const [search, setSearch] = React.useState("");
@@ -31,18 +29,13 @@ const Navbar = () => {
             name="search"
             className="sm:min-w-[800px] w-full bg-white"
             value={search}
-            onChange = {(e)=> setSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
 
         {/* Create new Product button */}
         <div>
-          <Button asChild>
-            <Link href="/products/new">
-              <PlusCircleIcon size={20} />
-              Create New Product
-            </Link>
-          </Button>
+          <CreateProdM />
         </div>
       </nav>
     </header>
