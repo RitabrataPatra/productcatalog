@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,7 @@ import Link from "next/link";
 import { PlusCircleIcon} from "lucide-react";
 
 const Navbar = () => {
+  const [search, setSearch] = React.useState("");
   return (
     <header className="border bg-neutral-50">
       {/* Navbar */}
@@ -27,8 +29,9 @@ const Navbar = () => {
             type="text"
             placeholder="Search Products"
             name="search"
-            defaultValue={""}
             className="sm:min-w-[800px] w-full bg-white"
+            value={search}
+            onChange = {(e)=> setSearch(e.target.value)}
           />
         </div>
 
