@@ -14,7 +14,6 @@ export async function GET(){
     try {
       await connectMongo();
       const products = await Product.find();
-      console.log("products");
     console.log(products);
     return NextResponse.json(products , {status: 200});  
     } catch (error) {
