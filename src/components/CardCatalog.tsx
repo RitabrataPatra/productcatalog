@@ -39,7 +39,7 @@ const CardCatalog = () => {
     const data = await res.json();
     setData(data);
     setIsLoading(false);
-    console.log(data);
+    // console.log(data);
   };
 
   const deleteData = async (id: string) => {
