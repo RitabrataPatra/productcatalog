@@ -28,3 +28,20 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     handleError(error);
   }
 }
+
+
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }){
+  
+  try {
+    await connectMongo();
+    const { id } = params;
+    const body = await req.json();
+    const updatedProduct = await Product.findByIdAndUpdate(id, body, { new: true });
+    console.log(updatedProduct);
+    return NextResponse.json(updatedProduct, { status: 200 });
+
+  } catch (error) {
+    handleError(error);
+    
+  }
+} 

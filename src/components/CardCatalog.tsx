@@ -12,6 +12,8 @@ import Image from "next/image";
 import { Loader2Icon } from "lucide-react";
 import { toProperTime } from "../../helpers/helpers";
 import { Button } from "./ui/button";
+// import UpdateProd from "./UpdateProd";
+import UpdateImage from "./UpdateImage";
 
 interface ItemDetailProps {
   _id: string;
@@ -94,10 +96,11 @@ const CardCatalog = () => {
                 <Image
                   src={item.image}
                   alt="Product Image"
-                  width={200}
+                  width={100}
                   height={100}
                   className="rounded-lg "
-                  style={{ height: "200px", objectFit: "cover" }}
+                  style={{ height: "200px", width: "auto", objectFit: "cover" }}
+                  priority
                 />
                 <div>
                   <CardHeader>
@@ -124,7 +127,8 @@ const CardCatalog = () => {
                 >
                   Delete Product
                 </Button>
-                <Button variant={"outline"}>Change Image</Button>
+                  <UpdateImage id={item._id}/>
+   
               </div>
             </Card>
           ))}
