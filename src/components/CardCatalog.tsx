@@ -146,7 +146,7 @@ const CardCatalog = () => {
               </div>
             </Card>
           ))}
-          <div className="flex justify-between mt-4">
+          <div className="flex justify-between mt-4 items-center">
             <Button
               disabled={currentPage === 1}
               onClick={handlePreviousPage}
