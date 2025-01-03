@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,8 +12,37 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PlusCircleIcon } from "lucide-react";
+import React from "react";
+
+const inputs = [
+  "title",
+  "description",
+  "content",
+  "footer",
+  "price",
+  "category",
+];
 
 export function CreateProdM() {
+  const [formData, setFormData] = React.useState<Record<string, string>>(
+    inputs.reduce((acc, input) => {
+      acc[input] = ""; // Initialize all inputs with empty strings
+      return acc;
+    }, {} as Record<string, string>)
+  );
+
+  const handleChange = (e : React.ChangeEvent<HTMLInputElement>, field : string) => {
+    setFormData({
+      ...formData,
+      [field]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e : React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Form submitted:", formData);
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -30,41 +60,30 @@ export function CreateProdM() {
             Make sure to fill out all the fields.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <form action="" className="space-y-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="title" className="text-right">
-                Product Title
-              </Label>
-              <Input id="title" value="Pedro Duarte" className="col-span-3" />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="description" className="text-right">
-                Description
-              </Label>
-              <Input
-                id="description"
-                value="@peduarte"
-                className="col-span-3"
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="content" className="text-right">
-                Content
-              </Label>
-              <Input id="content" value="@peduarte" className="col-span-3" />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="footer" className="text-right">
-               Footer
-              </Label>
-              <Input id="footer" value="@peduarte" className="col-span-3" />
-            </div>
-          </form>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid gap-4 py-4">
+            {inputs.map((field) => (
+              <div
+                className="grid grid-cols-4 items-center gap-4"
+                key={field}
+              >
+                <Label htmlFor={field} className="text-right">
+                  {field.charAt(0).toUpperCase() + field.slice(1)}
+                </Label>
+                <Input
+                  id={field}
+                  value={formData[field]}
+                  className="col-span-3"
+                  type="text"
+                  onChange={(e) => handleChange(e, field)}
+                />
+              </div>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button type="submit">Save changes</Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
