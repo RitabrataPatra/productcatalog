@@ -37,6 +37,7 @@ const CardCatalog = () => {
     setIsLoading(false);
     console.log(data);
   };
+
   useEffect(() => {
     console.log("Fetching Data");
     getData();
@@ -61,7 +62,8 @@ const CardCatalog = () => {
                   alt="Product Image"
                   width={200}
                   height={100}
-                  className="rounded-lg"
+                  className="rounded-lg "
+                  style={{ height: "200px", objectFit: "cover" }}
                 />
                 <div>
                   <CardHeader>
