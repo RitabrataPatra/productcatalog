@@ -30,7 +30,7 @@ const CardCatalog = () => {
   const [data, setData] = useState<ItemDetailProps[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 2; // Adjust the number of items per page
+  const itemsPerPage = 3; // Adjust the number of items per page
 
   const getData = async (page: number) => {
     setIsLoading(true);
