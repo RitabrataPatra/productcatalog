@@ -85,7 +85,7 @@ export function CreateProdM() {
       <DialogTrigger asChild>
         <Button>
           <PlusCircleIcon />
-          <span className="ml-2">Create New Product</span>
+          <span>Create New Product</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
