@@ -26,6 +26,7 @@ interface ItemDetailProps {
 const CardCatalog = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [data, setData] = React.useState([]);
+
   const getData = async () => {
     setIsLoading(true);
     const res = await fetch("/api/product");
@@ -36,6 +37,39 @@ const CardCatalog = () => {
     setData(data);
     setIsLoading(false);
     console.log(data);
+  };
+
+  const deleteData = async (id: string) => {
+    const userConfirmed = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
+    if (!userConfirmed) return;
+
+    try {
+      setIsLoading(true); // Show loading state
+      const res = await fetch(`/api/product/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to delete the product.");
+      }
+
+      const deletedItem = await res.json();
+      console.log("Deleted:", deletedItem);
+
+      // Optimistically update state without re-fetching
+      setData((prevData) =>
+        prevData.filter((item: ItemDetailProps) => item._id !== id)
+      );
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      alert(
+        "An error occurred while trying to delete the product. Please try again."
+      );
+    } finally {
+      setIsLoading(false); // Reset loading state
+    }
   };
 
   useEffect(() => {
@@ -84,7 +118,12 @@ const CardCatalog = () => {
 
               <div className="flex flex-col gap-4 mr-4">
                 <Button>Update Product</Button>
-                <Button variant={"destructive"}>Delete Product</Button>
+                <Button
+                  variant={"destructive"}
+                  onClick={() => deleteData(item._id)}
+                >
+                  Delete Product
+                </Button>
                 <Button variant={"outline"}>Change Image</Button>
               </div>
             </Card>

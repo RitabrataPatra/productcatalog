@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 // Utility function for error handling
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const handleError = (error: any) => {
+export const handleError = (error: any) => {
     console.error("API Error:", error.message || error);
     return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
   };
@@ -33,3 +33,4 @@ export async function POST(req: NextRequest){
         return handleError(error);
     }
 }
+
