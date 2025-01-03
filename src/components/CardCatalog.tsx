@@ -133,7 +133,7 @@ const CardCatalog = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-4 mr-4">
+              <div className=" flex-col gap-4 mr-4 md:flex hidden">
                 <UpdateProd item={item} />
                 <Button
                   variant={"destructive"}
