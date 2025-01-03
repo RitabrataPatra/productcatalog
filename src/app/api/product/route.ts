@@ -10,16 +10,42 @@ import { NextRequest, NextResponse } from "next/server";
     console.error("API Error:", error.message || error);
     return NextResponse.json({ error: error.message || "Internal Server Error" }, { status: 500 });
   };
-export async function GET(){
-    try {
-      await connectMongo();
-      const products = await Product.find();
-    console.log(products);
-    return NextResponse.json(products , {status: 200});  
-    } catch (error) {
-      return handleError(error);
+export async function GET(req: NextRequest) {
+  try {
+    await connectMongo();
+
+    // Extract query parameters for pagination
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const limit = parseInt(searchParams.get("limit") || "10", 10);
+
+    if (page < 1 || limit < 1) {
+      return NextResponse.json({ error: "Invalid page or limit" }, { status: 400 });
     }
-    
+
+    // Calculate pagination values
+    const skip = (page - 1) * limit;
+
+    // Fetch paginated data
+    const [products, totalItems] = await Promise.all([
+      Product.find().sort({ createdAt: -1 }).skip(skip).limit(limit), // Sorted by newest first
+      Product.countDocuments(),
+    ]);
+
+    const totalPages = Math.ceil(totalItems / limit);
+
+    return NextResponse.json(
+      {
+        items : products,
+        totalItems,
+        totalPages,
+        currentPage: page,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    return handleError(error);
+  }
 }
 
 export async function POST(req: NextRequest){

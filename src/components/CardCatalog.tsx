@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -12,7 +12,6 @@ import Image from "next/image";
 import { Loader2Icon, Trash2Icon } from "lucide-react";
 import { toProperTime } from "../../helpers/helpers";
 import { Button } from "./ui/button";
-// import UpdateProd from "./UpdateProd";
 import UpdateImage from "./UpdateImage";
 import { UpdateProd } from "./UpdateProd";
 
@@ -27,19 +26,27 @@ export interface ItemDetailProps {
 }
 
 const CardCatalog = () => {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [data, setData] = React.useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState<ItemDetailProps[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 2; // Adjust the number of items per page
 
-  const getData = async () => {
+  const getData = async (page: number) => {
     setIsLoading(true);
-    const res = await fetch("/api/product");
-    if (!res.ok) {
-      throw new Error("Failed to fetch data , check client side code");
+    try {
+      const res = await fetch(`/api/product?page=${page}&limit=${itemsPerPage}`);
+      if (!res.ok) {
+        throw new Error("Failed to fetch data, check client-side code");
+      }
+      const result = await res.json();
+      setData(result.items); // Assuming `items` is the paginated data array
+      setTotalPages(result.totalPages); // Assuming `totalPages` is provided by the API
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
     }
-    const data = await res.json();
-    setData(data);
-    setIsLoading(false);
-    // console.log(data);
   };
 
   const deleteData = async (id: string) => {
@@ -49,37 +56,38 @@ const CardCatalog = () => {
     if (!userConfirmed) return;
 
     try {
-      setIsLoading(true); // Show loading state
-      const res = await fetch(`/api/product/${id}`, {
-        method: "DELETE",
-      });
-
+      setIsLoading(true);
+      const res = await fetch(`/api/product/${id}`, { method: "DELETE" });
       if (!res.ok) {
         throw new Error("Failed to delete the product.");
       }
-
-      const deletedItem = await res.json();
-      console.log("Deleted:", deletedItem);
-
-      // Optimistically update state without re-fetching
       setData((prevData) =>
         prevData.filter((item: ItemDetailProps) => item._id !== id)
       );
     } catch (error) {
       console.error("Error deleting product:", error);
-      alert(
-        "An error occurred while trying to delete the product. Please try again."
-      );
+      alert("An error occurred while trying to delete the product.");
     } finally {
-      setIsLoading(false); // Reset loading state
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    console.log("Fetching Data");
-    getData();
-    console.log("Data Fetched");
-  }, []);
+    getData(currentPage);
+  }, [currentPage]);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
   return (
     <>
       {isLoading ? (
@@ -88,7 +96,7 @@ const CardCatalog = () => {
         </div>
       ) : (
         <section className="flex flex-col gap-4">
-          {data.map((item: ItemDetailProps) => (
+          {data.map((item) => (
             <Card
               className="shadow-md flex p-2 items-center justify-between"
               key={item._id}
@@ -99,10 +107,13 @@ const CardCatalog = () => {
                   alt="Product Image"
                   width={100}
                   height={100}
-                  className="rounded-lg "
-                  style={{ height: "200px", width: "auto", objectFit: "cover" ,
-                  objectPosition: "center"
-                   }}
+                  className="rounded-lg"
+                  style={{
+                    height: "200px",
+                    width: "auto",
+                    objectFit: "cover",
+                    objectPosition: "center",
+                  }}
                   priority
                 />
                 <div>
@@ -131,11 +142,29 @@ const CardCatalog = () => {
                   <Trash2Icon />
                   Delete Product
                 </Button>
-                  <UpdateImage id={item._id} image={item.image}/>
-   
+                <UpdateImage id={item._id} image={item.image} />
               </div>
             </Card>
           ))}
+          <div className="flex justify-between mt-4">
+            <Button
+              disabled={currentPage === 1}
+              onClick={handlePreviousPage}
+              variant="outline"
+            >
+              Previous
+            </Button>
+            <span className="text-sm text-neutral-500">
+              Page {currentPage} of {totalPages}
+            </span>
+            <Button
+              disabled={currentPage === totalPages}
+              onClick={handleNextPage}
+              variant="outline"
+            >
+              Next
+            </Button>
+          </div>
         </section>
       )}
     </>
