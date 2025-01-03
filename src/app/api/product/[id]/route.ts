@@ -30,14 +30,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 }
 
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }){
+export async function PUT(req: NextRequest, {params}: {params: Promise<{ id: string }>}){
   
   try {
 
     await connectMongo();
-    const resolvedParams = await Promise.resolve(params);
-    console.log("PARAMS : ");
-    const { id } = resolvedParams; ;
+    const { id } = await params; ;
     const body = await req.json();
     const updatedProduct = await Product.findByIdAndUpdate(id, body, { new: true });
     console.log(updatedProduct);
