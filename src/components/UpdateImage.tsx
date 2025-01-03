@@ -15,9 +15,9 @@ import { ImagePlusIcon } from "lucide-react";
 import React from "react";
 // import { useParams } from "next/navigation";
 
-export default function UpdateImage({ id }: { id: string }) {
+export default function UpdateImage({ image ,id }: { image : string ,id: string }) {
 //   const { id } = useParams(); // Get productId from dynamic route
-  const [input, setInput] = React.useState({ image: "" });
+  const [input, setInput] = React.useState({ image:  image});
   const [isLoading, setIsLoading] = React.useState(false);
   const [modal, setModal] = React.useState(false);
 

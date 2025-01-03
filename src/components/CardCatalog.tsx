@@ -100,7 +100,9 @@ const CardCatalog = () => {
                   width={100}
                   height={100}
                   className="rounded-lg "
-                  style={{ height: "200px", width: "auto", objectFit: "cover" }}
+                  style={{ height: "200px", width: "auto", objectFit: "cover" ,
+                  objectPosition: "center"
+                   }}
                   priority
                 />
                 <div>
@@ -129,7 +131,7 @@ const CardCatalog = () => {
                   <Trash2Icon />
                   Delete Product
                 </Button>
-                  <UpdateImage id={item._id}/>
+                  <UpdateImage id={item._id} image={item.image}/>
    
               </div>
             </Card>
