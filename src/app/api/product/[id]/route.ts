@@ -30,7 +30,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 }
 
 
-export async function PUT(req: NextRequest, {params}: {params: Promise<{ id: string }>}){
+export async function PUT({params}: {params: Promise<{ id: string }>} , req: NextRequest, ){
   
   try {
 
