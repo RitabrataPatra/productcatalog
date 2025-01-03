@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { LoaderIcon, PlusCircleIcon } from "lucide-react";
 import React from "react";
 import { Textarea } from "./ui/textarea";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 const inputs = [
   "title",
@@ -25,7 +25,7 @@ const inputs = [
 ];
 
 export function CreateProdM() {
-  const router = useRouter();
+  // const router = useRouter();
   const[modal , setModal] = React.useState(false);
   const [formData, setFormData] = React.useState<Record<string, string>>(
     inputs.reduce((acc, input) => {
@@ -76,8 +76,8 @@ export function CreateProdM() {
       
       setIsLoading(false);
       setModal(false);
-      router.push("/"); // Redirect to home page
-    }
+      window.location.reload(); // Reload the page 
+      }
   };
 
   return (
