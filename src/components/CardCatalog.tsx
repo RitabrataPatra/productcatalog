@@ -107,7 +107,7 @@ const CardCatalog = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="text-sm text-neutral-500">
-                    <p>{item.content}</p>
+                    <p className="line-clamp-1">{item.content}</p>
                   </CardContent>
                   <CardFooter className="text-sm text-neutral-400 flex-col flex items-start">
                     <p>₹{item.price}.</p>

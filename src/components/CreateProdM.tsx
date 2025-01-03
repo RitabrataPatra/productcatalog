@@ -47,8 +47,8 @@ export function CreateProdM() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       const response = await fetch("/api/product", {
         method: "POST",
         headers: {
@@ -76,7 +76,7 @@ export function CreateProdM() {
       
       setIsLoading(false);
       setModal(false);
-      router.refresh();
+      router.push("/"); // Redirect to home page
     }
   };
 
