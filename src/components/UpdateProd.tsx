@@ -55,7 +55,7 @@ export function UpdateProd({ item }: { item: ItemDetailProps }) {
       if (response.ok) {
         console.log("Product updated successfully");
         setModal(false);
-        window.location.reload(); // Reloads the page to reflect the changes
+        // window.location.reload(); // Reloads the page to reflect the changes
       } else {
         console.error("Error updating product:", await response.text());
       }
