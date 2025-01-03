@@ -3,12 +3,12 @@ import Product from "@/lib/models/Product";
 import { NextRequest, NextResponse } from "next/server";
 import { handleError } from "../route";
 
-export async function DELETE({ params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     await connectMongo();
 
     // Extract the `id` from params
-    const { id } = await params;
+    const { id } = params;
 
     if (!id) {
       return NextResponse.json({ error: "Product ID is required" }, { status: 400 });
@@ -30,12 +30,13 @@ export async function DELETE({ params }: { params: Promise<{ id: string }> }) {
 }
 
 
-export async function PUT({params}: {params: Promise<{ id: string }>} , req: NextRequest, ){
+export async function PUT(req: NextRequest){
   
   try {
 
     await connectMongo();
-    const { id } = await params; ;
+    const url = new URL(req.url);
+    const id = url.pathname.split('/').pop(); // Extract the last segment (the `id`)
     const body = await req.json();
     const updatedProduct = await Product.findByIdAndUpdate(id, body, { new: true });
     console.log(updatedProduct);
