@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ImagePlusIcon } from "lucide-react";
 import React from "react";
 // import { useParams } from "next/navigation";
 
@@ -56,7 +57,12 @@ export default function UpdateImage({ id }: { id: string }) {
   return (
     <Dialog open={modal} onOpenChange={setModal}>
       <DialogTrigger asChild>
-        <Button variant="outline">Change Image</Button>
+        
+        <Button variant="outline">
+          <span><ImagePlusIcon/></span>
+          Change Image
+
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

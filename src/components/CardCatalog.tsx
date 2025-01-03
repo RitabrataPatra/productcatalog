@@ -9,13 +9,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon, Trash2Icon } from "lucide-react";
 import { toProperTime } from "../../helpers/helpers";
 import { Button } from "./ui/button";
 // import UpdateProd from "./UpdateProd";
 import UpdateImage from "./UpdateImage";
+import { UpdateProd } from "./UpdateProd";
 
-interface ItemDetailProps {
+export interface ItemDetailProps {
   _id: string;
   title: string;
   content: string;
@@ -120,11 +121,12 @@ const CardCatalog = () => {
               </div>
 
               <div className="flex flex-col gap-4 mr-4">
-                <Button>Update Product</Button>
+                <UpdateProd item={item} />
                 <Button
                   variant={"destructive"}
                   onClick={() => deleteData(item._id)}
                 >
+                  <Trash2Icon />
                   Delete Product
                 </Button>
                   <UpdateImage id={item._id}/>
