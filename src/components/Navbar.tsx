@@ -1,20 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { CreateProdM } from "./CreateProdM";
 import { GithubIcon, Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Avatar from "./Avatar";
 
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+
 
 
 const Navbar = () => {
@@ -61,25 +56,7 @@ const Navbar = () => {
     <header className="border bg-neutral-50">
       <nav className="flex justify-between items-center px-4 py-4 md:justify-center md:gap-8">
         <div className="flex items-center">
-          <TooltipProvider delayDuration={200}>
-            <Tooltip>
-              <TooltipTrigger >
-                <Image
-                  src={
-                    session?.user?.image ||
-                    "https://imgs.search.brave.com/01loLPoF2OPdOFYcM13q8ZPoKICaegqhr0FF34a1HEY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMTIvQXZh/dGFyLVByb2ZpbGUt/UE5HLUltYWdlcy5w/bmc"
-                  }
-                  alt="logo"
-                  width={40}
-                  height={40}
-                  className="rounded-full border border-neutral-400 shadow-lg"
-                />
-              </TooltipTrigger>
-              <TooltipContent >
-                <p>{session?.user?.name}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Avatar session={session}/>
         </div>
 
         {/* {!isMenuOpen ? (
