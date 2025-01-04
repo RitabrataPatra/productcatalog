@@ -3,10 +3,14 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { CreateProdM } from "./CreateProdM";
-import { Menu, X } from "lucide-react";
+import { GithubIcon, Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
+  const { data: session  ,} = useSession()
+  console.log(session?.user)
   const [search, setSearch] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState(search);
@@ -41,7 +45,7 @@ const Navbar = () => {
     } else {
       params.delete("search");
     }
-    router.push(`/?${params.toString()}`);
+    router.push(`/?${params.toString()}`);  
   }, [debouncedSearch, router]);
 
   return (
@@ -49,17 +53,17 @@ const Navbar = () => {
       <nav className="flex justify-between items-center px-4 py-4 md:justify-center md:gap-8">
         <div className="flex items-center">
           <Image
-            src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg"
+            src={session?.user?.image || "https://imgs.search.brave.com/01loLPoF2OPdOFYcM13q8ZPoKICaegqhr0FF34a1HEY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMTIvQXZh/dGFyLVByb2ZpbGUt/UE5HLUltYWdlcy5w/bmc"}
             alt="logo"
             width={40}
             height={40}
-            className="rounded-full border border-neutral-900 shadow-lg"
+            className="rounded-full border border-neutral-400 shadow-lg"
           />
         </div>
 
-        {isMenuOpen && (
+        {/* {!isMenuOpen ? (
           <h1 className="text-2xl font-bold">Product Catelog App</h1>
-        )}
+        ) : null} */}
 
         <div className="md:hidden">
           <button
@@ -89,8 +93,23 @@ const Navbar = () => {
           </div>
 
           <div className="px-4 py-2 md:p-0">
-            <CreateProdM />
+            {
+              !session?.user ? 
+              <Button variant={"default"} disabled={true}>Please Login</Button>
+              :  <CreateProdM />
+            }
+           
           </div>
+          
+          {
+            session?.user ? 
+            <Button onClick={()=>signOut()} variant={"destructive"} className="hover:bg-red-400">
+              <GithubIcon size={20} />
+              <p>Logout</p>
+            </Button> :
+            <Button onClick={()=>signIn("github")} variant={"default"}>Login</Button>
+            
+          }
         </div>
       </nav>
     </header>
