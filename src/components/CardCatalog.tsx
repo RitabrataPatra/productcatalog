@@ -30,13 +30,14 @@ export interface ItemDetailProps {
 const CardCatalog = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<ItemDetailProps[]>([]);
-  const searchParams = useSearchParams(); // Access query parameters
-  const search = searchParams.get("search") || ""; // Get `search` query
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const searchParams = useSearchParams(); // Access query parameters
+  const search = searchParams.get("search") || ""; // Get `search` query
   const itemsPerPage = 3; // Adjust the number of items per page
 
-  const getData = async (page: number , query: string) => {
+  // Function to fetch data
+  const getData = async (page: number, query: string) => {
     setIsLoading(true);
     try {
       const res = await fetch(`/api/product?page=${page}&limit=${itemsPerPage}&search=${query}`);
@@ -76,10 +77,17 @@ const CardCatalog = () => {
     }
   };
 
+  // Fetch data when the `search` query or `currentPage` changes
+  useEffect(() => {
+    setCurrentPage(1); // Reset to page 1 when search query changes
+    getData(1, search);
+    console.log("search", search);
+  }, [search]);
+
   useEffect(() => {
     getData(currentPage, search);
-    console.log("search");
-  }, [currentPage , search]);
+    console.log("currentPage", currentPage);
+  }, [currentPage, search]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -101,56 +109,60 @@ const CardCatalog = () => {
         </div>
       ) : (
         <section className="flex flex-col gap-4">
-          {data.map((item) => (
-            <Card
-              className="shadow-md flex p-2 items-center justify-between"
-              key={item._id}
-            >
-              <div className="flex items-center">
-                <Image
-                  src={item.image}
-                  alt="Product Image"
-                  width={100}
-                  height={100}
-                  className="rounded-lg"
-                  style={{
-                    height: "200px",
-                    width: "auto",
-                    objectFit: "cover",
-                    objectPosition: "center",
-                  }}
-                  priority
-                />
-                <div>
-                  <CardHeader>
-                    <CardTitle>{item.title}</CardTitle>
-                    <CardDescription className="text-xs">
-                      {item.category}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-sm text-neutral-500">
-                    <p className="line-clamp-1">{item.content}</p>
-                  </CardContent>
-                  <CardFooter className="text-sm text-neutral-400 flex-col flex items-start">
-                    <p>₹{item.price}.</p>
-                    <p>{toProperTime(item.createdAt)}</p>
-                  </CardFooter>
+          {data.length === 0 ? (
+            <div>No products found</div>
+          ) : (
+            data.map((item) => (
+              <Card
+                className="shadow-md flex p-2 items-center justify-between"
+                key={item._id}
+              >
+                <div className="flex items-center">
+                  <Image
+                    src={item.image}
+                    alt="Product Image"
+                    width={100}
+                    height={100}
+                    className="rounded-lg"
+                    style={{
+                      height: "200px",
+                      width: "auto",
+                      objectFit: "cover",
+                      objectPosition: "center",
+                    }}
+                    priority
+                  />
+                  <div>
+                    <CardHeader>
+                      <CardTitle>{item.title}</CardTitle>
+                      <CardDescription className="text-xs">
+                        {item.category}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="text-sm text-neutral-500">
+                      <p className="line-clamp-1">{item.content}</p>
+                    </CardContent>
+                    <CardFooter className="text-sm text-neutral-400 flex-col flex items-start">
+                      <p>₹{item.price}.</p>
+                      <p>{toProperTime(item.createdAt)}</p>
+                    </CardFooter>
+                  </div>
                 </div>
-              </div>
 
-              <div className=" flex-col gap-4 mr-4 md:flex hidden">
-                <UpdateProd item={item} />
-                <Button
-                  variant={"destructive"}
-                  onClick={() => deleteData(item._id)}
-                >
-                  <Trash2Icon />
-                  Delete Product
-                </Button>
-                <UpdateImage id={item._id} image={item.image} />
-              </div>
-            </Card>
-          ))}
+                <div className=" flex-col gap-4 mr-4 md:flex hidden">
+                  <UpdateProd item={item} />
+                  <Button
+                    variant={"destructive"}
+                    onClick={() => deleteData(item._id)}
+                  >
+                    <Trash2Icon />
+                    Delete Product
+                  </Button>
+                  <UpdateImage id={item._id} image={item.image} />
+                </div>
+              </Card>
+            ))
+          )}
           <div className="flex justify-between mt-4 items-center">
             <Button
               disabled={currentPage === 1}
