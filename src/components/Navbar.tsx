@@ -2,18 +2,16 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { CreateProdM } from "./CreateProdM";
-import { GithubIcon, Menu, X } from "lucide-react";
+import {Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
-import { signIn, signOut, useSession } from "next-auth/react";
-import Avatar from "./Avatar";
-
-
-
-
+import {  useSession } from "next-auth/react";
+// import Avatar from "./Avatar";
+import Image from "next/image";
+import DropAuth from "./DropAuth";
 
 const Navbar = () => {
-  const { data: session  ,} = useSession()
+  const { data: session } = useSession();
   // console.log(session?.user)
   const [search, setSearch] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -49,20 +47,24 @@ const Navbar = () => {
     } else {
       params.delete("search");
     }
-    router.push(`/?${params.toString()}`);  
+    router.push(`/?${params.toString()}`);
   }, [debouncedSearch, router]);
 
   return (
     <header className="border bg-neutral-50">
       <nav className="flex justify-between items-center px-4 py-4 md:justify-center md:gap-8">
-        <div className="flex items-center">
-          <Avatar session={session}/>
+        <div className="flex items-center bg-white px-4 rounded-full"> 
+          {/* logo */}
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={50}
+            height={1}
+            className="rounded-full"
+            style={{ height: "auto" , width: "52px"}} 
+          />
+          <h2 className="text-xl font-semibold">Catalog</h2>
         </div>
-
-        {/* {!isMenuOpen ? (
-          <h1 className="text-2xl font-bold">Product Catelog App</h1>
-        ) : null} */}
-
         <div className="md:hidden">
           <button
             onClick={toggleMenu}
@@ -90,7 +92,7 @@ const Navbar = () => {
             />
           </div>
 
-          <div className="px-4 py-2 md:p-0">
+          <div className="flex items-center gap-4">
             {!session?.user ? (
               <Button variant={"default"} disabled={true}>
                 Please Login
@@ -100,7 +102,11 @@ const Navbar = () => {
             )}
           </div>
 
-          {session?.user ? (
+          {/* login logout button */}
+          <DropAuth session={session}/>
+          {/* {session?.user ? (
+            <>
+            
             <Button
               onClick={() => signOut()}
               variant={"destructive"}
@@ -108,12 +114,12 @@ const Navbar = () => {
             >
               <GithubIcon size={20} />
               <p>Logout</p>
-            </Button>
+            </Button></>
           ) : (
             <Button onClick={() => signIn("github")} variant={"default"}>
               Login
             </Button>
-          )}
+          )} */}
         </div>
       </nav>
     </header>
