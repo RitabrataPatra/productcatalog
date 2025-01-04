@@ -14,7 +14,7 @@ import Avatar from "./Avatar";
 
 const Navbar = () => {
   const { data: session  ,} = useSession()
-  console.log(session?.user)
+  // console.log(session?.user)
   const [search, setSearch] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState(search);
