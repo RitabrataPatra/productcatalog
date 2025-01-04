@@ -1,23 +1,52 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { CreateProdM } from "./CreateProdM";
 import { Menu, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [search, setSearch] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const router = useRouter();
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
 
+  // Function to handle the search input
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  // Debounce effect to delay the API call
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500); // 500ms delay before making the API call
+
+    // Cleanup the previous timer when search input changes
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [search]);
+
+  // Effect to update the URL whenever the debounced search value changes
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (debouncedSearch) {
+      params.set("search", debouncedSearch);
+    } else {
+      params.delete("search");
+    }
+    router.push(`/?${params.toString()}`);
+  }, [debouncedSearch, router]);
+
   return (
     <header className="border bg-neutral-50">
-      {/* Navbar */}
       <nav className="flex justify-between items-center px-4 py-4 md:justify-center md:gap-8">
-        {/* App Logo */}
         <div className="flex items-center">
           <Image
             src="https://static.vecteezy.com/system/resources/previews/024/183/525/non_2x/avatar-of-a-man-portrait-of-a-young-guy-illustration-of-male-character-in-modern-color-style-vector.jpg"
@@ -28,13 +57,10 @@ const Navbar = () => {
           />
         </div>
 
-        {
-          isMenuOpen && (
-            <h1  className="text-2xl font-bold">Product Catelog App</h1>
-          )
-        }
+        {isMenuOpen && (
+          <h1 className="text-2xl font-bold">Product Catelog App</h1>
+        )}
 
-        {/* Hamburger Menu Icon for Mobile */}
         <div className="md:hidden">
           <button
             onClick={toggleMenu}
@@ -44,13 +70,13 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Navigation Items */}
         <div
           className={`transition-all duration-300 ease-in-out overflow-hidden ${
-            isMenuOpen ? "max-h-40 opacity-100 border border-b-neutral-300" : "max-h-0 opacity-0"
+            isMenuOpen
+              ? "max-h-40 opacity-100 border border-b-neutral-300"
+              : "max-h-0 opacity-0"
           } absolute top-16 left-0 w-full bg-neutral-50 md:static md:w-auto md:max-h-none md:opacity-100 md:flex md:gap-8 md:items-center`}
         >
-          {/* Search Input */}
           <div className="w-full md:w-auto px-4 py-2 md:p-0">
             <Input
               type="text"
@@ -58,11 +84,10 @@ const Navbar = () => {
               name="search"
               className="sm:min-w-[800px] w-full bg-white"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={handleSearch}
             />
           </div>
 
-          {/* Create New Product Button */}
           <div className="px-4 py-2 md:p-0">
             <CreateProdM />
           </div>

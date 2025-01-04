@@ -18,6 +18,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "10", 10);
+    const search = searchParams.get("search") || ""; // Extract the search query
 
     if (page < 1 || limit < 1) {
       return NextResponse.json({ error: "Invalid page or limit" }, { status: 400 });
@@ -26,10 +27,20 @@ export async function GET(req: NextRequest) {
     // Calculate pagination values
     const skip = (page - 1) * limit;
 
+    //build search filter
+    const searchFilter = search
+      ? {
+          $or: [
+            { title: { $regex: search, $options: "i" } }, // Case-insensitive search in title
+            { content: { $regex: search, $options: "i" } }, // Case-insensitive search in content
+          ],
+        }
+      : {};
+
     // Fetch paginated data
     const [products, totalItems] = await Promise.all([
-      Product.find().sort({ createdAt: -1 }).skip(skip).limit(limit), // Sorted by newest first
-      Product.countDocuments(),
+      Product.find(searchFilter).sort({ createdAt: -1 }).skip(skip).limit(limit), // Sorted by newest first
+      Product.countDocuments(searchFilter),
     ]);
 
     const totalPages = Math.ceil(totalItems / limit);

@@ -15,6 +15,8 @@ import { Button } from "./ui/button";
 import UpdateImage from "./UpdateImage";
 import { UpdateProd } from "./UpdateProd";
 
+import { useSearchParams } from "next/navigation";
+
 export interface ItemDetailProps {
   _id: string;
   title: string;
@@ -28,14 +30,16 @@ export interface ItemDetailProps {
 const CardCatalog = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<ItemDetailProps[]>([]);
+  const searchParams = useSearchParams(); // Access query parameters
+  const search = searchParams.get("search") || ""; // Get `search` query
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 3; // Adjust the number of items per page
 
-  const getData = async (page: number) => {
+  const getData = async (page: number , query: string) => {
     setIsLoading(true);
     try {
-      const res = await fetch(`/api/product?page=${page}&limit=${itemsPerPage}`);
+      const res = await fetch(`/api/product?page=${page}&limit=${itemsPerPage}&search=${query}`);
       if (!res.ok) {
         throw new Error("Failed to fetch data, check client-side code");
       }
@@ -73,8 +77,9 @@ const CardCatalog = () => {
   };
 
   useEffect(() => {
-    getData(currentPage);
-  }, [currentPage]);
+    getData(currentPage, search);
+    console.log("search");
+  }, [currentPage , search]);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
