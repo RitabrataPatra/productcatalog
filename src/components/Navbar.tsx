@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { CreateProdM } from "./CreateProdM";
-import {Menu, X } from "lucide-react";
+import {Info, Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import {  useSession } from "next-auth/react";
@@ -91,35 +91,21 @@ const Navbar = () => {
               onChange={handleSearch}
             />
           </div>
-
           <div className="flex items-center gap-4">
+          <div>
             {!session?.user ? (
               <Button variant={"default"} disabled={true}>
-                Please Login
-              </Button>
+                <Info size={20}/>
+                Login to Create Products
+              </Button>   
             ) : (
               <CreateProdM />
             )}
           </div>
 
-          {/* login logout button */}
+          {/* login logout dropdown */}
           <DropAuth session={session}/>
-          {/* {session?.user ? (
-            <>
-            
-            <Button
-              onClick={() => signOut()}
-              variant={"destructive"}
-              className="hover:bg-red-400"
-            >
-              <GithubIcon size={20} />
-              <p>Logout</p>
-            </Button></>
-          ) : (
-            <Button onClick={() => signIn("github")} variant={"default"}>
-              Login
-            </Button>
-          )} */}
+        </div>
         </div>
       </nav>
     </header>
