@@ -81,12 +81,12 @@ const CardCatalog = () => {
   useEffect(() => {
     setCurrentPage(1); // Reset to page 1 when search query changes
     getData(1, search);
-    console.log("search", search);
+    // console.log("search", search);
   }, [search]);
 
   useEffect(() => {
     getData(currentPage, search);
-    console.log("currentPage", currentPage);
+    // console.log("currentPage", currentPage);
   }, [currentPage, search]);
 
   const handleNextPage = () => {
