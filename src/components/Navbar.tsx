@@ -8,6 +8,15 @@ import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
 
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+
+
 const Navbar = () => {
   const { data: session  ,} = useSession()
   console.log(session?.user)
@@ -52,13 +61,25 @@ const Navbar = () => {
     <header className="border bg-neutral-50">
       <nav className="flex justify-between items-center px-4 py-4 md:justify-center md:gap-8">
         <div className="flex items-center">
-          <Image
-            src={session?.user?.image || "https://imgs.search.brave.com/01loLPoF2OPdOFYcM13q8ZPoKICaegqhr0FF34a1HEY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMTIvQXZh/dGFyLVByb2ZpbGUt/UE5HLUltYWdlcy5w/bmc"}
-            alt="logo"
-            width={40}
-            height={40}
-            className="rounded-full border border-neutral-400 shadow-lg"
-          />
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger >
+                <Image
+                  src={
+                    session?.user?.image ||
+                    "https://imgs.search.brave.com/01loLPoF2OPdOFYcM13q8ZPoKICaegqhr0FF34a1HEY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMTIvQXZh/dGFyLVByb2ZpbGUt/UE5HLUltYWdlcy5w/bmc"
+                  }
+                  alt="logo"
+                  width={40}
+                  height={40}
+                  className="rounded-full border border-neutral-400 shadow-lg"
+                />
+              </TooltipTrigger>
+              <TooltipContent >
+                <p>{session?.user?.name}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
         {/* {!isMenuOpen ? (
@@ -93,23 +114,29 @@ const Navbar = () => {
           </div>
 
           <div className="px-4 py-2 md:p-0">
-            {
-              !session?.user ? 
-              <Button variant={"default"} disabled={true}>Please Login</Button>
-              :  <CreateProdM />
-            }
-           
+            {!session?.user ? (
+              <Button variant={"default"} disabled={true}>
+                Please Login
+              </Button>
+            ) : (
+              <CreateProdM />
+            )}
           </div>
-          
-          {
-            session?.user ? 
-            <Button onClick={()=>signOut()} variant={"destructive"} className="hover:bg-red-400">
+
+          {session?.user ? (
+            <Button
+              onClick={() => signOut()}
+              variant={"destructive"}
+              className="hover:bg-red-400"
+            >
               <GithubIcon size={20} />
               <p>Logout</p>
-            </Button> :
-            <Button onClick={()=>signIn("github")} variant={"default"}>Login</Button>
-            
-          }
+            </Button>
+          ) : (
+            <Button onClick={() => signIn("github")} variant={"default"}>
+              Login
+            </Button>
+          )}
         </div>
       </nav>
     </header>
