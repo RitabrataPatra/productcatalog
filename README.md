@@ -2,9 +2,9 @@
 
 A fully responsive, feature-rich product catalog application built with **Next.js**. This application allows authenticated users to browse, search, and manage products with pagination and CRUD operations.  
 
-#Live Demo Link
+# Live Demo Link
 
-![Live Demo](https://productcatalog-pc.vercel.app/)
+https://productcatalog-pc.vercel.app/
 
 ## Features  
 
@@ -78,7 +78,7 @@ A fully responsive, feature-rich product catalog application built with **Next.j
 
 ## Project Structure  
 
-```plaintext
+```struct
 ├── components  
 │   ├── ui/  
 │   │   ├── button.tsx      # Custom Button component  
