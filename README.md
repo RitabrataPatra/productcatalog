@@ -4,7 +4,6 @@ A fully responsive, feature-rich product catalog application built with **Next.j
 
 #Live Demo Link
 
-```copy
 ![Live Demo](https://productcatalog-pc.vercel.app/)
 
 ## Features  
