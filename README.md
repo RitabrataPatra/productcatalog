@@ -13,7 +13,7 @@ A fully responsive, feature-rich product catalog application built with **Next.j
 - Users can log in with their GitHub accounts to manage products.  
 - Secured routes to restrict access to authorized users.  
 
-![Auth Screenshot](public\auth-ss.png "User Logon Example")
+![Auth Screenshot](public\auth-ss.png "User Login Example")
 
 ### 2. Product Management  
 - Display a list of products with details like:  
@@ -24,17 +24,21 @@ A fully responsive, feature-rich product catalog application built with **Next.j
   - Created At timestamp  
   - Product Image  
 
-  ![Product List Screenshot](https://via.placeholder.com/800x400 "Product List Example") 
+  ![Product List Screenshot](image.png "Product List Example") 
 
 ### 3. Search Functionality  
 - Users can search for products using keywords.  
 - The search automatically fetches relevant results from the backend.  
 - Pagination adapts to the number of search results, showing accurate page numbers.  
 
+![Search SS](image-1.png)
+
 ### 4. Pagination  
 - Pagination implemented for browsing products.  
 - Users can navigate between pages to view all products.  
-- Pagination adjusts dynamically based on search results.  
+- Pagination adjusts dynamically based on search results.
+
+![Pagination SS](image-2.png)
 
 ### 5. CRUD Operations  
 - **Create**: Add new products to the catalog (requires additional components for forms).  
@@ -42,7 +46,12 @@ A fully responsive, feature-rich product catalog application built with **Next.j
 - **Update**:  
   - Update product details using the `UpdateProd` component.  
   - Update product images with the `UpdateImage` component.  
-- **Delete**: Remove products from the catalog with a confirmation prompt.  
+- **Delete**: Remove products from the catalog with a confirmation prompt. 
+
+![Create Product SS](image-3.png "Create Product")
+![Update Product SS](image-4.png "Update Product")
+![Delete Product SS](image-5.png "Delete Product")
+![Change Image SS](image-6.png "if you just want to change image")
 
 ### 6. Loading States  
 - A spinner (using **lucide-react** icons) is displayed during data fetches or other asynchronous operations.  
