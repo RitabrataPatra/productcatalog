@@ -96,24 +96,20 @@ https://productcatalog-pc.vercel.app/
 │   ├── images/             # Static assets (e.g., placeholders, icons)  
 ├── styles/                 # Global and module CSS files  
 
-
-## Screenshots
-
-
-
+``` 
 
 ## Installation  
 
 ### Clone the Repository  
 
-```bash
+```copy
 git clone https://github.com/your-username/product-catalog.git  
 cd product-catalog  
+```
 
-
-```bash
+```copy
 npm install
-
+```
 ### Configure GitHub Authentication  
 
 1. **Create a GitHub OAuth App**:  
@@ -127,10 +123,10 @@ npm install
    GITHUB_ID=your_github_client_id  
    GITHUB_SECRET=your_github_client_secret  
    NEXTAUTH_URL=http://localhost:3000  
-
-```npm
+    ```
+```copy
 npm run dev
-
+```
 ## Open the Application 
     - Open your browser and navigate to http://localhost:3000.
 
