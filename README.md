@@ -129,5 +129,5 @@ npm run dev
 ```
 
 ## Open the Application 
-    - Open your browser and navigate to http://localhost:3000.
+Open your browser and navigate to http://localhost:3000.
 
