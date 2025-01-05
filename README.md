@@ -13,7 +13,7 @@ https://productcatalog-pc.vercel.app/
 - Users can log in with their GitHub accounts to manage products.  
 - Secured routes to restrict access to authorized users.  
 
-![Auth Screenshot](public\auth-ss.png "User Login Example")
+![User Auth SS](image-7.png "click on the profile icon to login logout")
 
 ### 2. Product Management  
 - Display a list of products with details like:  
